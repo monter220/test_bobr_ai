@@ -98,7 +98,7 @@ async def answer(message: types.Message):
             f'{get_weather(location)}'
         )
     else:
-        await message.answer(os.getenv('Не смог найти город'))
+        await message.answer(os.getenv('ERROR_MESSAGE'))
 
 
 async def main():
