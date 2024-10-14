@@ -37,10 +37,10 @@ def check_location(city: str):
     return geolocator.geocode(city)
 
 
-def get_weather(latitude: float, longitude: float) -> str:
+def get_weather(location) -> str:
     params: dict[str, str] = {
-        'latitude': latitude,
-        'longitude': longitude,
+        'latitude': location.latitude,
+        'longitude': location.longitude,
         'current': [
             'temperature_2m',
             'relative_humidity_2m',
@@ -66,9 +66,8 @@ def get_weather(latitude: float, longitude: float) -> str:
     current_showers = current.Variables(5).Value()
     current_snowfall = current.Variables(6).Value()
     current_cloud_cover = current.Variables(7).Value()
-    current_surface_pressure = (
-            current.Variables(
-                8).Value()*os.getenv('PRESSURE_TRANSFER_COEFFICIENT'))
+    current_surface_pressure = (current.Variables(8).Value()*float(
+        os.getenv('PRESSURE_TRANSFER_COEFFICIENT')))
     current_wind_speed_10m = current.Variables(9).Value()
     return (
         f'Температора: {current_temperature_2m} C \n'
@@ -96,7 +95,7 @@ async def answer(message: types.Message):
         await message.answer(
             f'Город: {message.text} \n'
             f'{location}\n'
-            f'{get_weather(location.latitude, location.longitude)}'
+            f'{get_weather(location)}'
         )
     else:
         await message.answer(os.getenv('Не смог найти город'))
