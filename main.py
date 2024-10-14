@@ -23,7 +23,7 @@ geocode = partial(
 )
 cache_session = requests_cache.CachedSession(
     os.getenv('NAME_CACHE_FILENAME'),
-    expire_after=os.getenv('CACHE_EXPIRED_TIME'),
+    expire_after=int(os.getenv('CACHE_EXPIRED_TIME')),
 )
 retry_session = retry(
     cache_session,
